@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.izkml.trace.TraceAutoConfiguration,\
+com.izkml.trace.TraceHttpAutoConfiguration,\
+com.izkml.trace.TraceMybatisAutoConfiguration,\
+com.izkml.trace.TraceMqAutoConfiguration
