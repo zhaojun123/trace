@@ -13,6 +13,7 @@ public class TraceConfiguration {
     private MessageConverter messageConverter;
     /**
      * 配置参数，可以通过该属性传递配置参数，也可以通过System.setProperty配置
+     * 如果属性名相同 后者覆盖前者
      */
     private Map<String,String> propertiesMap;
 

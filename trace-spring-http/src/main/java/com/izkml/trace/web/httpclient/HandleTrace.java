@@ -28,7 +28,7 @@ public class HandleTrace implements HttpRequestInterceptor {
     public void process(HttpRequest request, HttpContext context) throws HttpException, IOException {
         Span span = traceContext.nextSpan(HTTP_CLIENT_SPAN_NAME);
         String uri = request.getRequestLine().getUri();
-        span.setBusinessMark(StringUtils.getHostPortPath(uri));
+        span.setBusinessMark(StringUtils.getSchemeHostPortPath(uri));
         span.setInfoTypeHandler(new RequestInfoTypeHandler(request));
         //将span放入到HttpContext中，供下一个拦截器使用
         context.setAttribute(TraceConstant.ZKML_TRACE,span);

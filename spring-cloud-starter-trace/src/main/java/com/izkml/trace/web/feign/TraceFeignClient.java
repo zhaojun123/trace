@@ -28,7 +28,7 @@ public class TraceFeignClient implements Client {
     @Override
     public Response execute(Request request, Request.Options options) throws IOException {
         Span span = traceContext.nextSpan(FEIGN_SPAN_NAME);
-        span.setBusinessMark(StringUtils.getHostPortPath(request.url()));
+        span.setBusinessMark(StringUtils.getSchemeHostPortPath(request.url()));
         spanHandler.handle(span, TraceFeignClient.class);
 
         //将span 放入到request头部

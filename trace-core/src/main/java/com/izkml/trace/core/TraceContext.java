@@ -80,19 +80,11 @@ public class TraceContext{
     }
 
     /**
-     * 获取当前节点的span，有可能为null
-     * @return
-     */
-    public Span getCurrentSpan(){
-        return CurrentSpanContext.getCurrentSpan();
-    }
-
-    /**
      * 通过当前节点的span创建下一个span
      * @return
      */
     public Span nextSpan(String spanName){
-        Span span = getCurrentSpan();
+        Span span = CurrentSpanContext.getCurrentSpan();
         if(span == null){
             span = Span.create(getApplicationName(),spanName);
         }else{
@@ -171,6 +163,15 @@ public class TraceContext{
     public String getStringProperty(final String name, final String defaultValue) {
         final String prop = getStringProperty(name);
         return (prop == null) ? defaultValue : prop;
+    }
+
+    /**
+     * 刷新trace 配置属性，但是不影响从system properties中读取的属性
+     * 如果system中存在属性名相同的属性 依然会覆盖前者
+     * @param properties
+     */
+    public void refreshProperties(Map<String,String> properties){
+        propertiesSupport.refreshNormal(properties);
     }
 
     @PreDestroy

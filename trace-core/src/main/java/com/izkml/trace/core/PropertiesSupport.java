@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class PropertiesSupport {
 
-    private Map<String,String> normal = new HashMap<>();
+    private volatile Map<String,String> normal = new HashMap<>();
 
     private volatile Map<String,String> env = new HashMap<>();
 

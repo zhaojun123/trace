@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class CurrentSpanContext {
 
-    private static ThreadLocal<SpanContextList<Span>> threadLocal =  new InheritableThreadLocal<SpanContextList<Span>>(){
+    private static ThreadLocal<SpanContextList<Span>> threadLocal =  new ThreadLocal<SpanContextList<Span>>(){
 
         private String name = "current-span-thread-local";
 

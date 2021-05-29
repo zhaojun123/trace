@@ -24,11 +24,7 @@ public class TraceContextFactory {
 
     public static TraceContext getContext(){
         if(traceContext == null){
-            synchronized (TraceContextFactory.class){
-                if(traceContext == null){
-                    traceContext = createContext(null);
-                }
-            }
+            throw new IllegalStateException("traceContext is null please invoking createContext() to get");
         }
         return traceContext;
     }

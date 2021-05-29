@@ -15,11 +15,11 @@ public class SpanContextConverter extends CompositeConverter<ILoggingEvent> {
 
     @Override
     protected String transform(ILoggingEvent event, String in) {
+        Map<String,String> attrMap = new HashMap<>();
         Span current = CurrentSpanContext.getCurrentSpan();
         if(current == null && event.getThrowableProxy()!=null){
             current = CurrentSpanContext.getThrowableSpan();
         }
-        Map<String,String> attrMap = new HashMap<>();
         if(current!=null){
             attrMap.put(ZKML_APPLICATION_NAME,current.getApplicationName());
             attrMap.put(ZKML_TRACE_ID,current.getTraceId());

@@ -6,15 +6,15 @@ import java.net.URISyntaxException;
 public class StringUtils {
 
     /**
-     * 从一个url中获取 host+port+path的拼装
+     * 从一个url中获取 Scheme+host+port+path的拼装
      * @param url
      * @return
      */
-    public static String getHostPortPath(String url){
+    public static String getSchemeHostPortPath(String url){
         try {
             URI uri = new URI(url);
             StringBuilder s = new StringBuilder();
-            s.append(uri.getHost());
+            s.append(uri.getScheme()).append("://").append(uri.getHost());
             if(uri.getPort()>0){
                 s.append(":").append(uri.getPort());
             }
@@ -25,5 +25,4 @@ public class StringUtils {
         }
 
     }
-
 }
