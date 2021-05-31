@@ -39,6 +39,8 @@ public class TraceConstant {
 
     public static final String FEIGN_SPAN_NAME = "feign";
 
+    public static final String REST_TEMPLATE_SPAN_NAME = "rest-template";
+
     /**
      * 各节点传递trace用到的属性名称
      */

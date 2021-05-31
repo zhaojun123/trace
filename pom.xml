@@ -31,6 +31,7 @@
         <trace.spring.mybatis.version>1.0-SNAPSHOT</trace.spring.mybatis.version>
         <trace.spring.rabbitmq.version>1.0-SNAPSHOT</trace.spring.rabbitmq.version>
         <spring.rabbit.version>1.7.12.RELEASE</spring.rabbit.version>
+        <spring.cloud.starter.trace.version>1.0-SNAPSHOT</spring.cloud.starter.trace.version>
     </properties>
 
 
@@ -59,6 +60,11 @@
                 <version>${trace.spring.rabbitmq.version}</version>
             </dependency>
             <dependency>
+                <groupId>com.izkml</groupId>
+                <artifactId>spring-cloud-starter-trace</artifactId>
+                <version>${spring.cloud.starter.trace.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring.cloud.version}</version>
@@ -74,6 +80,7 @@
         <module>trace-spring-http</module>
         <module>trace-spring-mybatis</module>
         <module>trace-spring-rabbitmq</module>
+        <module>trace-spring-cloud-example</module>
     </modules>
 
     <build>

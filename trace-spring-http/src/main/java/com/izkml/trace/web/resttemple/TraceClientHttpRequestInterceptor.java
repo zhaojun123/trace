@@ -1,6 +1,8 @@
-package com.izkml.trace.web;
+package com.izkml.trace.web.resttemple;
 
 import com.izkml.trace.core.*;
+import com.izkml.trace.core.util.StringUtils;
+import com.izkml.trace.web.HttpTags;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
@@ -16,8 +18,6 @@ import java.io.IOException;
  */
 public class TraceClientHttpRequestInterceptor implements ClientHttpRequestInterceptor {
 
-    private static final String REST_TEMPLATE_SPAN_NAME = "REST_TEMPLATE";
-
     private TraceContext traceContext = TraceContextFactory.getContext();
 
     private SpanHandler spanHandler;
@@ -28,11 +28,8 @@ public class TraceClientHttpRequestInterceptor implements ClientHttpRequestInter
 
     @Override
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
-        Span span = traceContext.nextSpan(REST_TEMPLATE_SPAN_NAME);
-        HttpTags tags = new HttpTags();
-        tags.setUrl(request.getURI().toString());
-        tags.setMethod(request.getMethod().name());
-        span.setTags(tags);
+        Span span = traceContext.nextSpan(TraceConstant.REST_TEMPLATE_SPAN_NAME);
+        span.setBusinessMark(StringUtils.getSchemeHostPortPath(request.getURI()));
 
         //将span 放入到request头部
         HttpHeaders httpHeaders = request.getHeaders();
@@ -50,11 +47,8 @@ public class TraceClientHttpRequestInterceptor implements ClientHttpRequestInter
             CurrentSpanContext.setThrowable(e);
             throw  e;
         } finally {
-            if(response!=null){
-                tags.setStatusCode(response.getRawStatusCode());
-                tags.setReason(response.getStatusText());
-                spanHandler.finish(span,TraceClientHttpRequestInterceptor.class);
-            }
+            span.setInfoTypeHandler(new RestTemplateInfoTypeHandler(request,response,body));
+            spanHandler.finish(span,TraceClientHttpRequestInterceptor.class);
         }
     }
 }

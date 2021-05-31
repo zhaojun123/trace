@@ -6,6 +6,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.amqp.rabbit.listener.AbstractMessageListenerContainer;
+import org.springframework.util.StringUtils;
 
 import java.util.Map;
 
@@ -45,17 +46,23 @@ public class TraceRabbitListenerAdvice implements MethodInterceptor {
         if(message == null || message.getMessageProperties() == null){
             return Span.create(traceContext.getApplicationName(),RABBIT_RECEIVE_SPAN_NAME);
         }
+        Span span = null;
         MessageProperties messageProperties = message.getMessageProperties();
         Map<String, Object> headers =  messageProperties.getHeaders();
         if(!headers.containsKey(TraceConstant.ZKML_TRACE_ID)){
-            return Span.create(traceContext.getApplicationName(),RABBIT_RECEIVE_SPAN_NAME);
+            span = Span.create(traceContext.getApplicationName(),RABBIT_RECEIVE_SPAN_NAME);
+        }else{
+            span = new Span.Builder()
+                    .traceId((String)headers.get(TraceConstant.ZKML_TRACE_ID))
+                    .parentSpanId((String)headers.get(TraceConstant.ZKML_SPAN_ID))
+                    .applicationName(traceContext.getApplicationName())
+                    .spanName(RABBIT_RECEIVE_SPAN_NAME)
+                    .build();
         }
-        return new Span.Builder()
-                .traceId((String)headers.get(TraceConstant.ZKML_TRACE_ID))
-                .parentSpanId((String)headers.get(TraceConstant.ZKML_SPAN_ID))
-                .applicationName(traceContext.getApplicationName())
-                .spanName(RABBIT_RECEIVE_SPAN_NAME)
-                .build();
+        if(StringUtils.hasLength(messageProperties.getConsumerQueue())){
+            span.setBusinessMark(messageProperties.getConsumerQueue());
+        }
+        return span;
     }
 
 }

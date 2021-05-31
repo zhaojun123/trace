@@ -5,7 +5,8 @@ import com.izkml.trace.core.TraceContext;
 import com.izkml.trace.core.log.LogSpanHandler;
 import com.izkml.trace.web.feign.TraceFeignClientProcessor;
 import com.izkml.trace.web.httpclient.HttpClientInterceptorInjector;
-import com.izkml.trace.web.TraceClientHttpRequestInterceptor;
+import com.izkml.trace.web.resttemple.TraceClientHttpRequestInterceptor;
+import com.izkml.trace.web.resttemple.TraceRestTemplateProcessor;
 import com.izkml.trace.web.servlet.TraceFilter;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -15,6 +16,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.DispatcherType;
 
@@ -36,13 +38,6 @@ public class TraceHttpAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(value = "trace.restTemplate.enable",havingValue = "true",matchIfMissing = true)
-    @ConditionalOnClass(name="org.springframework.http.client.ClientHttpRequestInterceptor")
-    TraceClientHttpRequestInterceptor traceClientHttpRequestInterceptor(SpanHandler spanHandler){
-        return new TraceClientHttpRequestInterceptor(spanHandler);
-    }
-
-    @Bean
     @ConditionalOnClass(name = "feign.Client")
     @ConditionalOnProperty(value = "trace.feign.enable",havingValue = "true",matchIfMissing = true)
     TraceFeignClientProcessor traceFeignClientProcessor(SpanHandler spanHandler){
@@ -59,6 +54,13 @@ public class TraceHttpAutoConfiguration {
                 DispatcherType.REQUEST);
         filterRegistrationBean.setOrder(TRACE_FILTER_ORDER);
         return filterRegistrationBean;
+    }
+
+    @Bean
+    @ConditionalOnProperty(value = "trace.restTemplate.enable",havingValue = "true",matchIfMissing = true)
+    @ConditionalOnClass(name="org.springframework.http.client.ClientHttpRequestInterceptor")
+    public TraceRestTemplateProcessor traceRestTemplateProcessor(SpanHandler spanHandler){
+        return new TraceRestTemplateProcessor(spanHandler);
     }
 
 }

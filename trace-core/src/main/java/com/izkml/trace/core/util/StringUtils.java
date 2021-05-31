@@ -13,16 +13,19 @@ public class StringUtils {
     public static String getSchemeHostPortPath(String url){
         try {
             URI uri = new URI(url);
-            StringBuilder s = new StringBuilder();
-            s.append(uri.getScheme()).append("://").append(uri.getHost());
-            if(uri.getPort()>0){
-                s.append(":").append(uri.getPort());
-            }
-            s.append(uri.getPath());
-            return s.toString();
+            return getSchemeHostPortPath(uri);
         } catch (URISyntaxException e) {
             return url;
         }
+    }
 
+    public static String getSchemeHostPortPath(URI uri){
+        StringBuilder s = new StringBuilder();
+        s.append(uri.getScheme()).append("://").append(uri.getHost());
+        if(uri.getPort()>0){
+            s.append(":").append(uri.getPort());
+        }
+        s.append(uri.getPath());
+        return s.toString();
     }
 }
