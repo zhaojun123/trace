@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Properties>
-        <Property name="LOG_PATTERN">%d{HH:mm:ss.SSS} %5p %scc([${spring.application.name},#{ZKML-SPAN-NAME},#{ZKML-SPAN-TYPE}][#{ZKML-TRACE-ID},#{ZKML-PARENT-SPAN-ID},#{ZKML-SPAN-ID},#{ZKML-FINISH-TIME}]) [%thread] %logger{36} - %msg%n</Property>
+        <Property name="LOG_PATTERN">%d{HH:mm:ss.SSS} | %5p | %scc(${spring.application.name},#{ZKML-SPAN-NAME},#{ZKML-SPAN-TYPE} | #{ZKML-TRACE-ID},#{ZKML-PARENT-SPAN-ID},#{ZKML-SPAN-ID},#{ZKML-FINISH-TIME}) | %thread | %logger{36} | %msg%n</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT" follow="true">

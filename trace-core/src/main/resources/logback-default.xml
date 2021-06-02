@@ -2,7 +2,7 @@
 
 
 <configuration  debug="false">
-    <property name="LOG_PATTERN" value="%d{HH:mm:ss.SSS} %5p %scc([${spring.application.name},#{ZKML-SPAN-NAME},#{ZKML-SPAN-TYPE}][#{ZKML-TRACE-ID},#{ZKML-PARENT-SPAN-ID},#{ZKML-SPAN-ID},#{ZKML-FINISH-TIME}]) [%thread] %logger{36} - %msg%n" />
+    <property name="LOG_PATTERN" value="%d{HH:mm:ss.SSS} | %5p | %scc(${spring.application.name},#{ZKML-SPAN-NAME},#{ZKML-SPAN-TYPE} | #{ZKML-TRACE-ID},#{ZKML-PARENT-SPAN-ID},#{ZKML-SPAN-ID},#{ZKML-FINISH-TIME}) | %thread | %logger{36} | %msg%n" />
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>

@@ -1,6 +1,5 @@
 package com.izkml.trace;
 
-import org.apache.logging.log4j.util.PropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.MutablePropertySources;
